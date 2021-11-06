@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserMealsUtil {
     public static void main(String[] args) {
@@ -49,15 +50,14 @@ public class UserMealsUtil {
 
     public static List<UserMealWithExcess> filteredByStreams(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
         // TODO Implement by streams
-        List<UserMealWithExcess> userMealWithExcessList = new ArrayList<>();
-        meals.stream()
+        return meals.stream()
                 .filter(p -> TimeUtil.isBetweenHalfOpen(p.getDateTime().toLocalTime(), startTime, endTime))
-                .forEach(meal -> {
+                .map(meal -> {
                     if (meal.getCalories() > caloriesPerDay)
-                        userMealWithExcessList.add(new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), true));
+                        return new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), true);
                     else
-                        userMealWithExcessList.add(new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), false));
-                });
-        return userMealWithExcessList;
+                        return new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), false);
+                })
+        .collect(Collectors.toList());
     }
 }
