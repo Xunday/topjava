@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -26,20 +27,9 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.debug("redirect to meals");
-        List<UserMeal> mealsTo = new ArrayList<>();
-        mealsTo.add(new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "soup", 300));
-        mealsTo.add(new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 30, 12, 0), "salad", 100));
-        mealsTo.add(new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "garlic", 20));
-        mealsTo.add(new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 30, 15, 0), "potatoes", 100));
-        mealsTo.add(new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 30, 17, 0), "chicken", 700));
-        mealsTo.add(new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 30, 19, 0), "grill meat", 800));
-        List<UserMealWithExcess> mealsToEx = UserMealsUtil
-                .filteredByStreams(mealsTo,
-                        LocalTime.of(7, 0),
-                        LocalTime.of(18, 0),
-                        2000);
+        List<UserMealWithExcess> mealsToEx = UserMealsUtil.getMealsWithExcess(UserMealsUtil.MEAL_LIST, 200);
 
-        log.debug(mealsToEx.size()+"");
+        log.debug(mealsToEx.size() + "");
         req.setAttribute("meals", mealsToEx);
         req.getRequestDispatcher("/meals.jsp").forward(req, resp);
     }

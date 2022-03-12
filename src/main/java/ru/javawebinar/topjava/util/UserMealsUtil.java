@@ -9,6 +9,15 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class UserMealsUtil {
+
+    public static final List<UserMeal> MEAL_LIST = Arrays.asList(
+        new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "soup", 300),
+        new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 30, 12, 0), "salad", 100),
+        new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "garlic", 20),
+        new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 30, 15, 0), "potatoes", 100),
+        new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 30, 17, 0), "chicken", 700),
+        new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 30, 19, 0), "grill meat", 800));
+
     public static void main(String[] args) {
         List<UserMeal> meals = Arrays.asList(
                 new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500),
@@ -24,6 +33,10 @@ public class UserMealsUtil {
         mealsTo.forEach(System.out::println);
 
         System.out.println(filteredByStreams(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000));
+    }
+
+    public static List<UserMealWithExcess> getMealsWithExcess (List<UserMeal> meals, int caliriesPerDay) {
+        return filteredByStreams(meals, LocalTime.MIN, LocalTime.MAX, caliriesPerDay);
     }
 
     public static List<UserMealWithExcess> filteredByCycles(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
